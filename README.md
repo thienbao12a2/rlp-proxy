@@ -7,7 +7,13 @@ This is the source code for the proxy used in <a href='https://github.com/dhaiwa
 ## Important note
 The `master` branch version of the proxy requires Redis & Supabase for rate-limiting & caching purposes. If you don't want these features, please switch to the [`no-redis-caching`](https://github.com/Dhaiwat10/rlp-proxy/tree/no-redis-caching) branch and use the code residing there.
 
-RedisToGo that has been used with this project is shutting down in August 2022. We will not be using RedisToGo, but migrate to Upstash-Redis. Simply create an account, and copy the implementation code to replace the current RedisToGo code in this project. Or we could deploy the proxy server and install Upstash directly on Heroku, and use the 'host', 'port', 'password' that are provided upon installation. To be able to use limiter, we simply replace the code ```const limiter = require('express-limiter')(app, redis);``` with ```const limiter = require('express-limiter')(app, client);``` since client is an instance of 'ioredis', redis is an instance of 'redis' package, and limiter takes in 2 parameters that are instance of express and instance of redis or ioredis.
+RedisToGo that has been used with this project is shutting down in August 2022. We will not be using RedisToGo, but migrate to Upstash-Redis. Simply create an account, and copy the implementation code to replace the current RedisToGo code in this project. Or we could deploy the proxy server and install Upstash directly on Heroku, and use the 'host', 'port', 'password' that are provided upon installation in our code like below.
+```const Redis = require('ioredis');    //import ioredis package```   
+```let client = new Redis(```
+  ```'rediss://:upstash-password@upstash-host:upstash-host'```
+```);```
+```client.set('foo', 'bar');```
+To be able to use limiter, we simply replace the code ```const limiter = require('express-limiter')(app, redis);``` with ```const limiter = require('express-limiter')(app, client);``` since client is an instance of 'ioredis', redis is an instance of 'redis' package, and limiter takes in 2 parameters that are instance of express and instance of redis or ioredis.
 
 ## Environment variables & pre-requisites
 
