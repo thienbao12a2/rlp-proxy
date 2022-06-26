@@ -11,8 +11,11 @@ RedisToGo that has been used with this project is shutting down in August 2022. 
 
 ```const Redis = require('ioredis');    //import ioredis package```   
 ```let client = new Redis(```
+
   ```'rediss://:upstash-password@upstash-host:upstash-host'```
+  
 ```);```
+
 ```client.set('foo', 'bar');```
 
 To be able to use limiter, we simply replace the code ```const limiter = require('express-limiter')(app, redis);``` with ```const limiter = require('express-limiter')(app, client);``` since client is an instance of 'ioredis', redis is an instance of 'redis' package, and limiter takes in 2 parameters that are instance of express and instance of redis or ioredis.
